@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Bloom — Interactive Stationery Shop</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <input type="checkbox" name="" id="toggler">
+        <label for="toggler" class="fas fa-bars"></label>
+
+        <a href="#" class="logo">Paper Bloom<span>.</span></a>
+
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#products">Products</a>
+            <a href="#review">Review</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="icons">
+            <button type="button" class="icon-btn" id="wishlist-btn" title="Liked Items">
+                <i class="fas fa-heart"></i>
+                <span class="badge" id="wishlist-count">0</span>
+            </button>
+            <button type="button" class="icon-btn" id="cart-btn" title="Shopping Cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge" id="cart-count">0</span>
+            </button>
+            <button type="button" class="icon-btn" id="user-btn" title="Account">
+                <i class="fas fa-user"></i>
+                <span class="user-label" id="user-display"></span>
+            </button>
+        </div>
+    </header>
+    
+
+    <div class="backdrop" id="backdrop"></div>
+
+    <!-- Wishlist -->
+    <aside class="drawer" id="wishlist-drawer">
+        <div class="drawer-header">
+            <h3><i class="fas fa-heart"></i> Liked Items</h3>
+            <button type="button" class="close-btn" data-close="wishlist-drawer">&times;</button>
+        </div>
+        <div class="drawer-body" id="wishlist-items">
+            <p class="empty-msg">Your wishlist is empty.</p>
+        </div>
+    </aside>
+
+    <!-- Shopping Cart -->
+    <aside class="drawer" id="cart-drawer">
+        <div class="drawer-header">
+            <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+            <button type="button" class="close-btn" data-close="cart-drawer">&times;</button>
+        </div>
+        <div class="drawer-body" id="cart-items">
+            <p class="empty-msg">Your cart is empty.</p>
+        </div>
+        <div class="drawer-footer">
+            <div class="total-row">
+                <span>Total:</span>
+                <span id="cart-total">₱0.00</span>
+            </div>
+            <button type="button" class="btn full-btn" id="open-checkout-btn">Proceed to Checkout</button>
+        </div>
+    </aside>
+
+    <!-- Login / Account Page -->
+    <div class="modal" id="user-modal">
+        <div class="modal-header">
+            <h3 id="user-modal-title"><i class="fas fa-user-circle"></i> Member Login</h3>
+            <button type="button" class="close-btn" data-close="user-modal">&times;</button>
+        </div>
+        <div class="modal-body" id="user-modal-body"></div>
+    </div>
+
+    <!-- Checkout & Payment Mode -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-credit-card"></i> Checkout & Payment</h3>
+            <button type="button" class="close-btn" data-close="checkout-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="checkout-form">
+                <div class="checkout-summary" id="checkout-summary"></div>
+
+                <label class="form-label">Full Name</label>
+                <input type="text" id="checkout-name" class="box" placeholder="Jane Doe" required>
+
+                <label class="form-label">Philippine Delivery Address</label>
+                <input type="text" id="checkout-address" class="box" placeholder="Street, Barangay, City, Province" required>
+
+                <label class="form-label">Payment Method</label>
+                <select id="payment-method" class="box" required>
+                    <option value="GCash">GCash</option>
+                    <option value="Maya">Maya</option>
+                    <option value="Credit / Debit Card">Credit / Debit Card</option>
+                    <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+                </select>
+
+                <div id="payment-details-group">
+                    <label class="form-label" id="payment-detail-label">GCash Mobile Number</label>
+                    <input type="text" id="payment-detail-input" class="box" placeholder="09XX XXX XXXX" required>
+                </div>
+
+                <button type="submit" class="btn full-btn">Pay Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- home section -->
+    <section class="home" id="home">
+        <div class="hero-animation" aria-hidden="true">
+            <div class="pink-orb orb-1"></div>
+            <div class="pink-orb orb-2"></div>
+            <div class="pink-orb orb-3"></div>
+
+            <ul class="floating-items">
+                <li><i class="fas fa-pen-nib"></i></li>
+                <li><i class="fas fa-paperclip"></i></li>
+                <li><i class="fas fa-book-open"></i></li>
+                <li><i class="fas fa-feather-alt"></i></li>
+                <li><i class="fas fa-highlighter"></i></li>
+                <li><i class="fas fa-bookmark"></i></li>
+                <li><i class="fas fa-pencil-alt"></i></li>
+                <li><i class="fas fa-sticky-note"></i></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h3>Paper Bloom</h3>
+            <span>crafted for thinkers & creators</span>
+            <p>Elevate your desk with minimalist notebooks, smooth pens, and pastel essentials.</p>
+            <a href="#products" class="btn">shop now</a>
+        </div>
+    </section>
+
+    <!-- about section -->
+    <section class="about" id="about">
+        <h1 class="heading"> <span> about </span> us </h1>
+
+        <div class="row">
+            <div class="video-container">
+                <img src="https://plus.unsplash.com/premium_photo-1770545168536-c5e75eab5083?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Curated Desk Supplies">
+                <h3>best stationery shop</h3>
+            </div>
+
+            <div class="content">
+                <h3>why choose us?</h3>
+                <p>We craft fountain-pen friendly paper and minimalist organizers for effortless daily writing.</p>
+                <p>Our curated collections bring calm and clarity to your Philippine workspace.</p>
+                <a href="#products" class="btn">learn more</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- icons section -->
+    <section class="icons-container">
+        <div class="icons">
+            <i class="fas fa-shipping-fast"></i>
+            <div class="info">
+                <h3>free delivery</h3>
+                <span>nationwide in philippines</span>
+            </div>
+        </div>
+
+        <div class="icons">
+            <i class="fas fa-undo-alt"></i>
+            <div class="info">
+                <h3>10 days returns</h3>
+                <span>moneyback guarantee</span>
+            </div>
+        </div>
+
+        <div class="icons">
+            <i class="fas fa-gift"></i>
+            <div class="info">
+                <h3>offer & gifts</h3>
+                <span>on all orders</span>
+            </div>
+        </div>
+
+        <div class="icons">
+            <i class="fas fa-shield-alt"></i>
+            <div class="info">
+                <h3>secure payments</h3>
+                <span>gcash, maya & cards</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- products section -->
+    <section class="products" id="products">
+        <h1 class="heading"> latest <span>products</span> </h1>
+
+        <div class="box-container">
+            <!-- Product 1 -->
+            <div class="box" data-id="p1" data-name="Dotted Journal" data-price="799" data-img="https://images.unsplash.com/photo-1603959823113-393c35fb056a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D">
+                <span class="discount">-59%</span>
+                <div class="image">
+                    <img src="https://images.unsplash.com/photo-1603959823113-393c35fb056a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Hardcover Dotted Journal">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>journal</h3>
+                    <div class="price"> ₱159.00 <span>₱389.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="box" data-id="p2" data-name="Fountain Pen" data-price="1399" data-img="https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D">
+                <span class="discount">-60%</span>
+                <div class="image">
+                    <img src="https://media.istockphoto.com/id/2164829039/photo/top-view-of-colorful-pens-on-pink-background-school-office-wallpaper.webp?a=1&b=1&s=612x612&w=0&k=20&c=haMOD68tC_oz8VlNt-q-q5QlGfRF55F4g7_zr6ge7XM=" alt="Executive Fountain Pen">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>pen (set)</h3>
+                    <div class="price"> ₱59.00 <span>₱149.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="box" data-id="p3" data-name="Pastel Markers" data-price="649" data-img="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80">
+                <span class="discount">-50%</span>
+                <div class="image">
+                    <img src="https://images.unsplash.com/photo-1781896694241-597c5033c8c6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Pastel Markers Set">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>markers</h3>
+                    <div class="price"> ₱249.00 <span>₱499.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="box" data-id="p4" data-name="Spiral Sketchbook" data-price="899" data-img="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80">
+                <span class="discount">-23%</span>
+                <div class="image">
+                    <img src="https://images.unsplash.com/photo-1605013546998-ec27529ee589?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Spiral Sketchbook">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>spiral sketchbook</h3>
+                    <div class="price"> ₱99.00 <span>₱125.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="box" data-id="p5" data-name="Sticky Notes & Clips" data-price="549" data-img="https://plus.unsplash.com/premium_photo-1723744982193-7340526a0964?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D">
+                <span class="discount">-40%</span>
+                <div class="image">
+                    <img src="https://plus.unsplash.com/premium_photo-1723744982193-7340526a0964?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Sticky Notes and Binder Clips">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>sticky notes & pens</h3>
+                    <div class="price"> ₱149.00 <span>₱249.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="box" data-id="p6" data-name="Graphite Pencils" data-price="499" data-img="https://images.unsplash.com/photo-1627873828998-50b7aeec7ffe?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D">
+                <span class="discount">-33%</span>
+                <div class="image">
+                    <img src="https://images.unsplash.com/photo-1627873828998-50b7aeec7ffe?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Graphite Pencils Set">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>Colored pencils</h3>
+                    <div class="price"> ₱199.00 <span>₱299.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="box" data-id="p7" data-name="Desk Flatlay Kit" data-price="1699" data-img="https://plus.unsplash.com/premium_photo-1663956148012-52c4b284dbca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D">
+                <span class="discount">-33%</span>
+                <div class="image">
+                    <img src="https://plus.unsplash.com/premium_photo-1663956148012-52c4b284dbca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Minimalist Desk Flatlay Kit">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>stationary kit</h3>
+                    <div class="price"> ₱599.00 <span>₱899.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="box" data-id="p8" data-name="A5 Lined Notebook" data-price="750" data-img="https://images.unsplash.com/photo-1514429015793-8a42fb25e17f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D">
+                <span class="discount">-44%</span>
+                <div class="image">
+                    <img src="https://images.unsplash.com/photo-1514429015793-8a42fb25e17f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="A5 Lined Notebook">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>a5 notebook</h3>
+                    <div class="price"> ₱50.00 <span>₱90.00</span> </div>
+                </div>
+            </div>
+
+            <!-- Product 9 -->
+            <div class="box" data-id="p9" data-name="Calligraphy Bundle" data-price="1050" data-img="https://images.unsplash.com/photo-1645197644105-308cd697a71f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D">
+                <span class="discount">-30%</span>
+                <div class="image">
+                    <img src="https://images.unsplash.com/photo-1645197644105-308cd697a71f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Calligraphy Pen and Ink Bundle">
+                    <div class="icons">
+                        <a href="#" class="fas fa-heart like-btn" title="Add to Liked"></a>
+                        <a href="#" class="cart-btn add-to-cart">add to cart</a>
+                        <a href="#" class="fas fa-share share-btn" title="Copy Product Link"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>calligraphy bundle</h3>
+                    <div class="price"> ₱350.00 <span>₱500.00</span> </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- products section ends -->
+
+    <!-- review section starts -->
+    <section class="review" id="review">
+        <h1 class="heading"> customer's <span>review</span> </h1>
+
+        <div class="box-container">
+            <div class="box">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>Thick dotted pages never bleed through. Easily my favorite daily planner!</p>
+                <div class="user">
+                    <img src="https://images.unsplash.com/photo-1740252117070-7aa2955b25f8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Journal Badge">
+                    <div class="user-info">
+                        <h3>alex morgan</h3>
+                        <span>bullet journaler</span>
+                    </div>
+                </div>
+                <span class="fas fa-quote-right"></span>
+            </div>
+
+            <div class="box">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>Fast Manila delivery and lovely pastel markers for my study notes.</p>
+                <div class="user">
+                    <img src="https://plus.unsplash.com/premium_photo-1739786995552-0a2ccfa62ba5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Markers Badge">
+                    <div class="user-info">
+                        <h3>claire bennett</h3>
+                        <span>architecture student</span>
+                    </div>
+                </div>
+                <span class="fas fa-quote-right"></span>
+            </div>
+
+            <div class="box">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>The desk flatlay kit upgraded my Cebu workspace. Great build quality!</p>
+                <div class="user">
+                    <img src="https://plus.unsplash.com/premium_photo-1739786996060-2769f1ded135?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" alt="Desk Kit Badge">
+                    <div class="user-info">
+                        <h3>daniel park</h3>
+                        <span>product designer</span>
+                    </div>
+                </div>
+                <span class="fas fa-quote-right"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- faq section starts -->
+    <section class="faq" id="faq">
+        <h1 class="heading"> frequently asked <span>questions</span> </h1>
+
+        <div class="row">
+            <div class="accordion-container">
+                <div class="faq-box">
+                    <h3><i class="fas fa-question-circle"></i> Are your notebooks fountain-pen friendly?</h3>
+                    <p>Yes, all journals feature thick 100gsm paper that prevents ink bleeding.</p>
+                </div>
+
+                <div class="faq-box">
+                    <h3><i class="fas fa-question-circle"></i> Do you ship nationwide in the Philippines?</h3>
+                    <p>Yes, we deliver nationwide across Luzon, Visayas, and Mindanao.</p>
+                </div>
+
+                <div class="faq-box">
+                    <h3><i class="fas fa-question-circle"></i> Can I return damaged items?</h3>
+                    <p>Yes, we offer 10-day returns with full refunds for damaged items.</p>
+                </div>
+
+                <div class="faq-box">
+                    <h3><i class="fas fa-question-circle"></i> Do you accept school or office bulk orders?</h3>
+                    <p>Yes, contact us below for wholesale bundles and school discounts.</p>
+                </div>
+            </div>
+
+            <div class="image">
+                <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80" alt="Minimalist Planner and Stationery">
+            </div>
+        </div>
+    </section>
+
+    <!-- contact section starts -->
+    <section class="contact" id="contact">
+        <h1 class="heading"> <span> contact </span> us </h1>
+
+        <div class="row">
+            <form id="contact-form">
+                <input type="text" placeholder="Name" class="box" required>
+                <input type="email" placeholder="Email" class="box" required>
+                <input type="number" placeholder="Number" class="box" required>
+                <textarea class="box" placeholder="Message" cols="30" rows="10" required></textarea>
+                <input type="submit" value="Send Message" class="btn">
+            </form>
+
+            <div class="image">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80" alt="Stationery Desk Arrangement">
+            </div>
+        </div>
+    </section>
+
+    <!-- footer section starts -->
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="#home">home</a>
+                <a href="#about">about</a>
+                <a href="#products">products</a>
+                <a href="#review">review</a>
+                <a href="#faq">faq</a>
+                <a href="#contact">contact</a>
+            </div>
+
+            <div class="box">
+                <h3>extra links</h3>
+                <a href="#" id="footer-account-link">my account</a>
+                <a href="#" id="footer-orders-link">my orders</a>
+                <a href="#" id="footer-wishlist-link">my wishlist</a>
+                <a href="#products">shop catalog</a>
+            </div>
+
+            <div class="box">
+                <h3>philippine hubs</h3>
+                <p class="footer-text">Cebu City</p>
+                <p class="footer-text">Metro Manila</p>
+                <p class="footer-text">Davao City</p>
+                <p class="footer-text">Baguio City</p>
+            </div>
+
+            <div class="box">
+                <h3>contact info</h3>
+                <p class="footer-text">+63 912 345 6789</p>
+                <p class="footer-text">paperbloom.ph@gmail.com</p>
+                <p class="footer-text">Cebu, Philippines</p>
+                <div class="payment-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-amex"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="credit"> created by <span>Paper Bloom</span> | philippines stationery shop </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
